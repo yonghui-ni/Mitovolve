@@ -1,0 +1,22 @@
+Package: Mitovolve
+Type: Package
+Title: Modelling the Evolution of the Prevalence of Mitochondrial Mutations
+Version: 0.1.0
+Author: Yonghui Ni, Kelly McCastlain, Stanley Pounds
+Maintainer: Yonghui Ni <YonghuiNi@STJUDE.org>
+Description: A statistical method of modeling the evolutionary changes in the prevalence of a mitochondrial DNA mutation over successive generations of cells. 
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.3
+Imports: stats,
+    dplyr,
+    ggplot2,
+    patchwork,
+    grDevices,
+    MCMCpack,
+    graphics,
+    rlang
+
+    
+  

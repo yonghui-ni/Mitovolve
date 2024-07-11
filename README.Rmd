@@ -1,0 +1,104 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# Mitovolve
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+*Mitovolve* is developed to infer the evolutionary history of somatic mitochondrial DNA (mtDNA) mutations by  singe-cell genomic sequencing data. The method models the evolutionary changes in the prevalence of a mtDNA mutation over successive generation of cells. For each cell sequencing data, we assume that the mutant mtDNA duplications inherits into daughter cell following a hypergeometric distribution. Then for a given number of generations, the number of mutant mtDNA is a convolution of hypergeometrics.In the observed data with multiple cells, a certain number of mtDNA reads are obtained for each cell. For each number of mtDNA reads observed per cell, the number of mutant mtDNA reads is obtained by hypergeometric sampling. In this way, we obtain a model distribution of the mutant allele fraction (MAF) observed in our data.  
+
+For the model with selective pressure, *Mitovolve* uses noncentral hypergeometric distribution with the log odds ratio of selecting a mutant mtDNA as a cubic polynomial function $\theta(m) = \beta_{0}+\beta_{1}m+\beta_{2}m^{2}+\beta_{3}m^{3}$, where m is the mutant allele fraction.To model the process without evolutionary pressure, Mitovolve uses a central hypergeometric distribution obtained by setting \beta_{0}=\beta_{1}=\beta_{2}=\beta_{3}=0  in the above equation so that there is no preference for a mutant mtDNA over a wildtype mtDNA (the log odds ratio $\theta(m) = 0$). Positive values for \theta(m) indicate a selective preference for the mutant mtDNAs; negative values for \theta(m) indicate a selective preference for the wildtype mtDNAs. 
+
+*Mitovolve* uses a likelihood framework to evaluate the fit of a series of theoretical models. The likelihood ratio test is used to evaluate the hypothesis that there is no selective pressure by comparing selective model with the best selection-free model. Finally, all best fitted model and observed data can be visualized by histogram plot of MAF.  
+
+
+
+
+## Installation
+
+You can install the *Mitovolve* from github:
+
+``` r
+# install.packages("devtools")
+# devtools::install_github("yonghui-ni/Mitovolve")
+```
+
+## Load package
+
+``` {r}
+#library(Mitovolve)
+``` 
+
+
+## Example
+Following is the example of the package usage. We have the single-cell RNA-seq data obtained from a pediatric subject’s leukemic cells harboring a single tumor enriched mtDNA mutation at the time of diagnosis. 1,888 leukemia cells are used for analysis, each cell with at least 1 mutant read. First, We can use full.mle() in the package to do modeling by imputing observed reads data (we have example reads data called "reads" in the package), the total copy number 0-312, the generation 1-45. Total 14398 model without selection were estimated .Since the selective model estimation of 14398 models needs long computation time, we can specify the MAF and generation to estimate less models. By this step, we have result output save as an example in our package, called res.tbl. 
+
+``` {r}
+head(reads)
+head(res.tbl)
+``` 
+
+In the res.tbl, we have negative log-likelihood value of selection-free model and selection model and estimate \betas of selection model cubic function. We have the best selection-free model:
+``` {r}
+res.tbl[which(res.tbl$null.nlogL==min(res.tbl$null.nlogL)),]
+``` 
+
+Then, we use likelihood ratio test to compares the fit of selection and no selection models. Here we specify the gelatinous we are interested in
+``` {r}
+res = P_value(res.tbl = res.tbl,
+                  nreps = seq(33,43,1),
+                  mutant.start = NULL,
+                  baseline.model =  "best-non-selection",
+                  alt.model = "selection")
+head(res$res.table.pval)
+all(res$res.table.pval$pval<0.05)
+```
+
+Since we have 1089 selection models we are interested in and their LR test p-values less than 0.05, we could use clustering method on \beta coefficients of these models to get the best selection model. We can see that from 10 clusters, the best selection models are both from low-starting and high-starting MAF. The third row of res.tbl.best is the best model without selection.
+``` {r}
+res.tbl.best = get.best.model(res.tbl = res$res.table.pval,K = 10,show.best = TRUE)
+res.tbl.best
+```
+
+Plot of mtDNA mutation probability distribution over generations
+``` {r}
+res.tbl.best$clr = c("red","green","grey")        
+plt.mtDNA.gens(res.tbl.best = res.tbl.best, ngen.show=5)
+```
+
+Histogram of mtDNA for the mutant allele fraction in the mtDNA mutation model and beta-smoothed hisogram
+``` {r}
+plt.hist(read.data = reads,
+           res.tbl.best = res.tbl.best,
+           nbin = 1000,
+           clr.scheme = "rainbow",
+           show.logOR = TRUE,
+           plot.title = "Histogram example")
+plt.hist.smooth(read.data = reads,
+                  res.tbl.best = res.tbl.best,
+                  plot.title = "Beta-smoothed historam example")
+
+```
+
+Plot the modeling of mtDNA mutation distribution respect to CDF or log odds ratio
+``` {r}
+plt.mtDNA.model(res.tbl.best = res.tbl.best,
+                read.data = reads,
+                plot.type = "CDF")
+```
+
+
+
