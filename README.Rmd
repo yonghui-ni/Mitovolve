@@ -46,7 +46,7 @@ Following is the example of the package usage. We have the single-cell RNA-seq d
 
 ``` {r}
 head(reads)
-head(res.tbl)
+head(res.tbl[which(res.tbl$generation %in% seq(33,43,1)),])
 ``` 
 
 In the res.tbl, we have negative log-likelihood value of selection-free model and selection model and coefficient estimates of selection model cubic function. We can see the best selection-free model:

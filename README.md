@@ -46,6 +46,21 @@ You can install the *Mitovolve* from github:
 ``` r
 #install.packages("devtools")
 devtools::install_github("yonghui-ni/Mitovolve")
+#> 
+#> ── R CMD build ─────────────────────────────────────────────────────────────────
+#>          checking for file 'C:\Users\yni54\AppData\Local\Temp\RtmpOUQhnF\remotes23ac61a211f5\yonghui-ni-Mitovolve-a0c60f2/DESCRIPTION' ...  ✔  checking for file 'C:\Users\yni54\AppData\Local\Temp\RtmpOUQhnF\remotes23ac61a211f5\yonghui-ni-Mitovolve-a0c60f2/DESCRIPTION'
+#>       ─  preparing 'Mitovolve':
+#>    checking DESCRIPTION meta-information ...  ✔  checking DESCRIPTION meta-information
+#>       ─  checking for LF line-endings in source and make files and shell scripts
+#>   ─  checking for empty or unneeded directories
+#>      NB: this package now depends on R (>=        NB: this package now depends on R (>= 3.5.0)
+#>        WARNING: Added dependency on R >= 3.5.0 because serialized objects in
+#>      serialize/load version 3 cannot be read in older versions of R.
+#>      File(s) containing such objects:
+#>        'Mitovolve/data/reads.RData' 'Mitovolve/data/res.tbl.RData'
+#> ─  building 'Mitovolve_0.1.0.tar.gz'
+#>      
+#> 
 ```
 
 ## Load package
@@ -80,21 +95,21 @@ head(reads)
 #> [4,]       85       5
 #> [5,]        0       9
 #> [6,]        4       2
-head(res.tbl)
+head(res.tbl[which(res.tbl$generation %in% seq(33,43,1)),])
 #>       mutant.start nmito.start generation null.nlogL alt.nlogL     beta3
-#> 14213          127         312         45   6350.531  5602.575 0.8224367
-#> 14214          128         312         45   6350.541  5602.576 0.8203761
-#> 14212          126         312         45   6351.211  5602.573 0.8244970
-#> 14215          129         312         45   6351.238  5602.577 0.8183210
-#> 14211          125         312         45   6352.584  5602.572 0.8265593
-#> 14216          130         312         45   6352.619  5602.578 0.8162666
+#> 13588          128         312         43   6399.520  5602.600 0.8907272
+#> 13587          127         312         43   6399.593        NA        NA
+#> 13589          129         312         43   6400.153        NA        NA
+#> 13586          126         312         43   6400.373        NA        NA
+#> 13590          130         312         43   6401.489        NA        NA
+#> 13585          125         312         43   6401.865  5602.598 0.8976096
 #>           beta2    beta1      beta0
-#> 14213 -1.460279 1.030039 -0.2307204
-#> 14214 -1.459949 1.032182 -0.2326098
-#> 14212 -1.460602 1.027888 -0.2288282
-#> 14215 -1.459618 1.034319 -0.2344967
-#> 14211 -1.460920 1.025730 -0.2269332
-#> 14216 -1.459282 1.036449 -0.2363812
+#> 13588 -1.573979 1.108664 -0.2496349
+#> 13587        NA       NA         NA
+#> 13589        NA       NA         NA
+#> 13586        NA       NA         NA
+#> 13590        NA       NA         NA
+#> 13585 -1.575442 1.102004 -0.2436376
 ```
 
 In the res.tbl, we have negative log-likelihood value of selection-free
@@ -103,10 +118,10 @@ cubic function. We can see the best selection-free model:
 
 ``` r
 res.tbl[which(res.tbl$null.nlogL==min(res.tbl$null.nlogL)),]
-#>       mutant.start nmito.start generation null.nlogL alt.nlogL     beta3
-#> 14213          127         312         45   6350.531  5602.575 0.8224367
-#>           beta2    beta1      beta0
-#> 14213 -1.460279 1.030039 -0.2307204
+#>       mutant.start nmito.start generation null.nlogL alt.nlogL beta3 beta2
+#> 14213          127         312         45   6350.531        NA    NA    NA
+#>       beta1 beta0
+#> 14213    NA    NA
 ```
 
 Then, we use likelihood ratio test to compares the fit of selection and
@@ -119,19 +134,19 @@ res = P_value(res.tbl = res.tbl,
               alt.model = "selection")
 head(res$res.table.pval)
 #>       mutant.start nmito.start generation null.nlogL alt.nlogL     beta3
-#> 14213          127         312         45   6350.531  5602.575 0.8224367
-#> 14214          128         312         45   6350.541  5602.576 0.8203761
-#> 14212          126         312         45   6351.211  5602.573 0.8244970
-#> 14215          129         312         45   6351.238  5602.577 0.8183210
-#> 14211          125         312         45   6352.584  5602.572 0.8265593
-#> 14216          130         312         45   6352.619  5602.578 0.8162666
-#>           beta2    beta1      beta0 df          pval
-#> 14213 -1.460279 1.030039 -0.2307204  4 1.086944e-322
-#> 14214 -1.459949 1.032182 -0.2326098  5 2.262821e-321
-#> 14212 -1.460602 1.027888 -0.2288282  5 2.257880e-321
-#> 14215 -1.459618 1.034319 -0.2344967  5 2.267761e-321
-#> 14211 -1.460920 1.025730 -0.2269332  5 2.257880e-321
-#> 14216 -1.459282 1.036449 -0.2363812  5 2.272702e-321
+#> 13588          128         312         43   6399.520  5602.600 0.8907272
+#> 13585          125         312         43   6401.865  5602.598 0.8976096
+#> 13591          131         312         43   6403.524  5602.602 0.8838910
+#> 13582          122         312         43   6410.637  5602.595 0.9045556
+#> 13594          134         312         43   6413.808  5602.604 0.8771039
+#> 13275          128         312         42   6425.347  5602.612 0.9285524
+#>           beta2    beta1      beta0 df pval
+#> 13588 -1.573979 1.108664 -0.2496349  4    0
+#> 13585 -1.575442 1.102004 -0.2436376  5    0
+#> 13591 -1.572511 1.115270 -0.2556089  5    0
+#> 13582 -1.576915 1.095291 -0.2376145  5    0
+#> 13594 -1.571043 1.121828 -0.2615628  5    0
+#> 13275 -1.635309 1.149901 -0.2588335  5    0
 all(res$res.table.pval$pval<0.05)
 #> [1] TRUE
 ```
@@ -146,14 +161,14 @@ third row of res.tbl.best is the best model without selection.
 res.tbl.best = get.best.model(res.tbl = res$res.table.pval,K = 10,show.best = TRUE)
 #> [1] "The best models are from modeling with low-starting MAF and high-starting MAF"
 res.tbl.best
-#>   nmito.start mutant.start generation       beta0    beta1     beta2     beta3
-#> 1         312          268         43 -0.53852036 1.273206 -1.156520 0.3470694
-#> 2         312           22         33  0.02113842 1.082474 -2.164404 1.6110367
-#> 3         312          127         45  0.00000000 0.000000  0.000000 0.0000000
+#>   nmito.start mutant.start generation       beta0    beta1     beta2    beta3
+#> 1         312          215         33 -0.61287045 1.882499 -2.267717 1.092491
+#> 2         312           22         33  0.02113842 1.082474 -2.164404 1.611037
+#> 3         312          128         43  0.00000000 0.000000  0.000000 0.000000
 #>      nlogL
-#> 1 5603.155
+#> 1 5602.584
 #> 2 5602.132
-#> 3 6350.531
+#> 3 6399.520
 ```
 
 ## Model Visulization
