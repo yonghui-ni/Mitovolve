@@ -78,14 +78,14 @@ plt.mtDNA.gens(res.tbl.best = res.tbl.best, ngen.show=5)
 Histogram of mtDNA for the mutant allele fraction in the mtDNA mutation model and beta-smoothed hisogram
 ``` {r}
 plt.hist(read.data = reads,
-           res.tbl.best = res.tbl.best,
-           nbin = 1000,
-           clr.scheme = "rainbow",
-           show.logOR = TRUE,
-           plot.title = "Histogram example")
+         res.tbl.best = res.tbl.best,
+         nbin = 1000,
+         clr.scheme = "rainbow",
+         show.logOR = TRUE,
+         plot.title = "Histogram example")
 plt.hist.smooth(read.data = reads,
-                  res.tbl.best = res.tbl.best,
-                  plot.title = "Beta-smoothed historam example")
+                res.tbl.best = res.tbl.best,
+                plot.title = "Beta-smoothed historam example")
 
 ```
 

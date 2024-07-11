@@ -109,7 +109,8 @@ res.tbl[which(res.tbl$null.nlogL==min(res.tbl$null.nlogL)),]
 #> 14213    NA    NA
 ```
 
-Then, we use likelihood ratio test to compares the fit of selection and no selection models (The baseline model is the best no selection model). 
+Then, we use likelihood ratio test to compares the fit of selection and
+no selection models (The baseline model is the best no selection model).
 
 ``` r
 res = P_value(res.tbl = res.tbl,
@@ -137,8 +138,9 @@ all(res$res.table.pval$pval<0.05)
 Since we have 1089 selection models LR test p-values less than 0.05, we
 could use clustering method on $\beta$ coefficients of these models to
 get the best selection model. We can see that from 10 clusters, the best
-selection models are both from low-starting and high-starting MAF. The
-third row of res.tbl.best is the best model without selection.
+selection models are both from models with low-starting and
+high-starting MAF. The third row of res.tbl.best is the best model
+without selection.
 
 ``` r
 res.tbl.best = get.best.model(res.tbl = res$res.table.pval,K = 10,show.best = TRUE)
@@ -170,19 +172,19 @@ model and beta-smoothed hisogram
 
 ``` r
 plt.hist(read.data = reads,
-           res.tbl.best = res.tbl.best,
-           nbin = 1000,
-           clr.scheme = "rainbow",
-           show.logOR = TRUE,
-           plot.title = "Histogram example")
+         res.tbl.best = res.tbl.best,
+         nbin = 1000,
+         clr.scheme = "rainbow",
+         show.logOR = TRUE,
+         plot.title = "Histogram example")
 ```
 
 <img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
 
 ``` r
 plt.hist.smooth(read.data = reads,
-                  res.tbl.best = res.tbl.best,
-                  plot.title = "Beta-smoothed historam example")
+                res.tbl.best = res.tbl.best,
+                plot.title = "Beta-smoothed historam example")
 ```
 
 <img src="man/figures/README-unnamed-chunk-9-2.png" width="100%" />
