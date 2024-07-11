@@ -30,7 +30,7 @@ For the model with selective pressure, *Mitovolve* uses noncentral hypergeometri
 ## Installation
 
 You can install the *Mitovolve* from github:
-``` {r}
+``` {r,warning = FALSE, message = FALSE}
 #install.packages("devtools")
 devtools::install_github("yonghui-ni/Mitovolve")
 ```
