@@ -46,25 +46,6 @@ You can install the *Mitovolve* from github:
 ``` r
 #install.packages("devtools")
 devtools::install_github("yonghui-ni/Mitovolve")
-#> Using GitHub PAT from the git credential store.
-#> Downloading GitHub repo yonghui-ni/Mitovolve@HEAD
-#> 
-#> ── R CMD build ─────────────────────────────────────────────────────────────────
-#>          checking for file 'C:\Users\yni54\AppData\Local\Temp\RtmpoH8Xvf\remotes66247fa41749\yonghui-ni-Mitovolve-6b82dfb/DESCRIPTION' ...  ✔  checking for file 'C:\Users\yni54\AppData\Local\Temp\RtmpoH8Xvf\remotes66247fa41749\yonghui-ni-Mitovolve-6b82dfb/DESCRIPTION' (411ms)
-#>       ─  preparing 'Mitovolve':
-#>    checking DESCRIPTION meta-information ...  ✔  checking DESCRIPTION meta-information
-#>       ─  checking for LF line-endings in source and make files and shell scripts
-#>   ─  checking for empty or unneeded directories
-#>      NB: this package now depends on R (>=        NB: this package now depends on R (>= 3.5.0)
-#>        WARNING: Added dependency on R >= 3.5.0 because serialized objects in
-#>      serialize/load version 3 cannot be read in older versions of R.
-#>      File(s) containing such objects:
-#>        'Mitovolve/data/reads.RData' 'Mitovolve/data/res.tbl.RData'
-#> ─  building 'Mitovolve_0.1.0.tar.gz'
-#>      
-#> 
-#> Installing package into 'C:/Users/yni54/AppData/Local/R/win-library/4.3'
-#> (as 'lib' is unspecified)
 ```
 
 ## Load package
