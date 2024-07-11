@@ -54,7 +54,7 @@ In the res.tbl, we have negative log-likelihood value of selection-free model an
 res.tbl[which(res.tbl$null.nlogL==min(res.tbl$null.nlogL)),]
 ``` 
 
-Then, we use likelihood ratio test to compares the fit of selection and no selection models (the best no selection model). Here we specify the generations we are interested in
+Then, we use likelihood ratio test to compares the fit of selection and no selection models (The baseline model is the best no selection model). 
 ``` {r}
 res = P_value(res.tbl = res.tbl,
               baseline.model =  "best-non-selection",
@@ -63,7 +63,7 @@ head(res$res.table.pval)
 all(res$res.table.pval$pval<0.05)
 ```
 
-Since we have 1089 selection models LR test p-values less than 0.05, we could use clustering method on $\beta$ coefficients of these models to get the best selection model. We can see that from 10 clusters, the best selection models are both from low-starting and high-starting MAF. The third row of res.tbl.best is the best model without selection.
+Since we have 1089 selection models LR test p-values less than 0.05, we could use clustering method on $\beta$ coefficients of these models to get the best selection model. We can see that from 10 clusters, the best selection models are both from models with low-starting and high-starting MAF. The third row of res.tbl.best is the best model without selection.
 ``` {r}
 res.tbl.best = get.best.model(res.tbl = res$res.table.pval,K = 10,show.best = TRUE)
 res.tbl.best

@@ -109,9 +109,7 @@ res.tbl[which(res.tbl$null.nlogL==min(res.tbl$null.nlogL)),]
 #> 14213    NA    NA
 ```
 
-Then, we use likelihood ratio test to compares the fit of selection and
-no selection models (the best no selection model). Here we specify the
-generations we are interested in
+Then, we use likelihood ratio test to compares the fit of selection and no selection models (The baseline model is the best no selection model). 
 
 ``` r
 res = P_value(res.tbl = res.tbl,
