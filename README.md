@@ -24,7 +24,7 @@ hypergeometric distribution with the log odds ratio of selecting a
 mutant mtDNA as a cubic polynomial function
 $\theta(m) = \beta_{0}+\beta_{1}m+\beta_{2}m^{2}+\beta_{3}m^{3}$, where
 m is the mutant allele fraction. To model the process without
-evolutionary pressure, Mitovolve uses a central hypergeometric
+evolutionary pressure, *Mitovolve* uses a central hypergeometric
 distribution obtained by setting
 $\beta_{0}$=$\beta_{1}$=$\beta_{2}$=$\beta_{3}$=0 in the above equation
 so that there is no preference for a mutant mtDNA over a wildtype mtDNA
@@ -99,14 +99,16 @@ head(res.tbl[which(res.tbl$generation %in% seq(33,43,1)),])
 
 In the res.tbl, we have negative log-likelihood value of selection-free
 model and selection model and coefficient estimates of selection model
-cubic function. We can see the best selection-free model:
+cubic function. We can see the best selection-free model in generation
+33 to 43,
 
 ``` r
-res.tbl[which(res.tbl$null.nlogL==min(res.tbl$null.nlogL)),]
-#>       mutant.start nmito.start generation null.nlogL alt.nlogL beta3 beta2
-#> 14213          127         312         45   6350.531        NA    NA    NA
-#>       beta1 beta0
-#> 14213    NA    NA
+res.tbl.select = res.tbl[which(res.tbl$generation %in% seq(33,43,1)),]
+res.tbl.select[which(res.tbl.select$null.nlogL==min(res.tbl.select$null.nlogL)),]
+#>       mutant.start nmito.start generation null.nlogL alt.nlogL     beta3
+#> 13588          128         312         43    6399.52    5602.6 0.8907272
+#>           beta2    beta1      beta0
+#> 13588 -1.573979 1.108664 -0.2496349
 ```
 
 Then, we use likelihood ratio test to compares the fit of selection and

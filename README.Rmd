@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 *Mitovolve* is developed to infer the evolutionary history of somatic mitochondrial DNA (mtDNA) mutations of singe-cell genomic sequencing data. The method models the evolutionary changes in the prevalence of a mtDNA mutation over successive generation of cells. For each cell, we assume that the mutant mtDNA duplications inherits into daughter cell following a hypergeometric distribution. Then for a given number of generations, the number of mutant mtDNA is a convolution of hypergeometrics. In the observed data with multiple cells, a certain number of mtDNA reads are obtained for each cell. For each number of mtDNA reads observed per cell, the number of mutant mtDNA reads is obtained by hypergeometric sampling. In this way, we obtain a model distribution of the mutant allele fraction (MAF) observed in our data.  
 
-For the model with selective pressure, *Mitovolve* uses noncentral hypergeometric distribution with the log odds ratio of selecting a mutant mtDNA as a cubic polynomial function $\theta(m) = \beta_{0}+\beta_{1}m+\beta_{2}m^{2}+\beta_{3}m^{3}$, where m is the mutant allele fraction. To model the process without evolutionary pressure, Mitovolve uses a central hypergeometric distribution obtained by setting $\beta_{0}$=$\beta_{1}$=$\beta_{2}$=$\beta_{3}$=0 in the above equation so that there is no preference for a mutant mtDNA over a wildtype mtDNA (the log odds ratio $\theta(m) = 0$). Positive values for $\theta(m)$ indicate a selective preference for the mutant mtDNAs; negative values for $\theta(m)$ indicate a selective preference for the wildtype mtDNAs. 
+For the model with selective pressure, *Mitovolve* uses noncentral hypergeometric distribution with the log odds ratio of selecting a mutant mtDNA as a cubic polynomial function $\theta(m) = \beta_{0}+\beta_{1}m+\beta_{2}m^{2}+\beta_{3}m^{3}$, where m is the mutant allele fraction. To model the process without evolutionary pressure, *Mitovolve* uses a central hypergeometric distribution obtained by setting $\beta_{0}$=$\beta_{1}$=$\beta_{2}$=$\beta_{3}$=0 in the above equation so that there is no preference for a mutant mtDNA over a wildtype mtDNA (the log odds ratio $\theta(m) = 0$). Positive values for $\theta(m)$ indicate a selective preference for the mutant mtDNAs; negative values for $\theta(m)$ indicate a selective preference for the wildtype mtDNAs. 
 
 *Mitovolve* uses a likelihood framework to evaluate the fit of a series of probabilistic models. The likelihood ratio test is used to evaluate the hypothesis that there is no selective pressure by comparing selective model with the best selection-free model. Finally, all best fitted model and observed data can be visualized by histogram plot of MAF.  
 
@@ -49,9 +49,10 @@ head(reads)
 head(res.tbl[which(res.tbl$generation %in% seq(33,43,1)),])
 ``` 
 
-In the res.tbl, we have negative log-likelihood value of selection-free model and selection model and coefficient estimates of selection model cubic function. We can see the best selection-free model:
+In the res.tbl, we have negative log-likelihood value of selection-free model and selection model and coefficient estimates of selection model cubic function. We can see the best selection-free model in generation 33 to 43,
 ``` {r}
-res.tbl[which(res.tbl$null.nlogL==min(res.tbl$null.nlogL)),]
+res.tbl.select = res.tbl[which(res.tbl$generation %in% seq(33,43,1)),]
+res.tbl.select[which(res.tbl.select$null.nlogL==min(res.tbl.select$null.nlogL)),]
 ``` 
 
 Then, we use likelihood ratio test to compares the fit of selection and no selection models (The baseline model is the best no selection model). 
@@ -70,13 +71,13 @@ res.tbl.best
 ```
 ## Model Visulization
 Plot of mtDNA mutation probability distribution over generations
-``` {r}
+``` {r,fig.width=10,fig.height=10}
 res.tbl.best$clr = c("red","green","grey")        
 plt.mtDNA.gens(res.tbl.best = res.tbl.best, ngen.show=5)
 ```
 
 Histogram of mtDNA for the mutant allele fraction in the mtDNA mutation model and beta-smoothed hisogram
-``` {r}
+``` {r,fig.width=10,fig.height=10}
 plt.hist(read.data = reads,
          res.tbl.best = res.tbl.best,
          nbin = 1000,
@@ -90,7 +91,7 @@ plt.hist.smooth(read.data = reads,
 ```
 
 Plot the modeling of mtDNA mutation distribution respect to CDF or log odds ratio
-``` {r}
+``` {r,fig.width=10,fig.height=10}
 plt.mtDNA.model(res.tbl.best = res.tbl.best,
                 read.data = reads,
                 plot.type = "CDF")
