@@ -470,6 +470,11 @@ P_value=function(res.tbl,
     }
   )
 
+  req.clms=c("nmito.start","mutant.start",
+             "generation","null.nlogL","alt.nlogL")
+
+  if (any(!(req.clms%in%colnames(res.tbl))))
+    stop("res.tbl missing some required columns.")
 
   # res.tbl subset
   keep.row.nrep<-which(res.tbl$generation %in% nreps)

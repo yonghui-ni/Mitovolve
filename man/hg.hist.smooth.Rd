@@ -22,7 +22,7 @@ Calculate the beta-smoothed histogram data for the mutant allele fraction in the
 \examples{
 res.tbl.best = get.best.model(res.tbl = res.tbl,K = 10,show.best = TRUE)
 best.null = which(rowSums(res.tbl.best[,grep("beta",colnames(res.tbl.best))])==0)
-null.mdl = res.tbl[best.null,]
+null.mdl = res.tbl.best[best.null,]
 null.maf = maf.pmf(res.tbl.best$mutant.start[best.null],
                  res.tbl.best$nmito.start[best.null]-res.tbl.best$mutant.start[best.null],
                  res.tbl.best$generation[best.null])
