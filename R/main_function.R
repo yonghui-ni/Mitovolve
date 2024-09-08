@@ -612,10 +612,10 @@ get.best.model=function(res.tbl,
 
   if (all(models$mutant.start<=0.5*models$nmito.start)==TRUE){
     print("The best model is from modeling with low-starting mutant allele frequency ")
-    best.model=models[1,1:(ncol(best.model)-2)]
+    best.model=models[1,1:(ncol(res.tbl.best.2)-2)]
   } else if(all(models$mutant.start>0.5*models$nmito.start)==TRUE){
     print("The best model is from modeling with high-starting mutant allele frequency")
-    best.model=models[1,1:(ncol(best.model)-2)]
+    best.model=models[1,1:(ncol(res.tbl.best.2)-2)]
   } else{
     print('The best models are from modeling with low-starting MAF and high-starting MAF')
     best.model=res.tbl.best.2[,1:(ncol(res.tbl.best.2)-2)]
